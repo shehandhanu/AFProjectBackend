@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+// Import User Controllers
 const { registerUser,
     getUserProfile,
     loginUser,
