@@ -1,6 +1,8 @@
 const User = require('../models/users');
 const sendToken = require('../utils/jwtToken');
 
+//Registered User
+//User Registration
 exports.registerUser = async (req, res, next) => {
 
     const { firstName, lastName, fullName, birthday, email, password, public_id, url, role,
@@ -52,7 +54,7 @@ exports.registerUser = async (req, res, next) => {
 //Get Current User
 exports.getUserProfile = async (req, res, next) => {
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user.id);
 
     if (!user) {
         return res.status(401).json({
@@ -66,7 +68,6 @@ exports.getUserProfile = async (req, res, next) => {
         user
     })
 }
-
 
 //User Login
 exports.loginUser = async (req, res, next) => {
@@ -122,7 +123,6 @@ exports.updateUser = async (req, res, next) => {
 
     let user = await User.findById(req.user.id);
 
-
     if (!user) {
         return res.status(404).json({
             success: false,
@@ -142,3 +142,92 @@ exports.updateUser = async (req, res, next) => {
     })
 }
 
+//Admin
+//Admin Get All Users
+exports.getAllUsers = async (req, res, next) => {
+
+    const users = await User.find();
+
+    if (!users) {
+        return res.status(404).json({
+            success: false,
+            message: 'No Any Users'
+        });
+    }
+
+    res.status(200).json({
+        success: true,
+        count: users.length,
+        users,
+        message: 'All Users Fetch SuccessFully'
+    })
+}
+
+//Get All Sessions
+exports.getAllSessions = async (req, res, next) => {
+
+    const users = await User.find();
+
+    if (!users) {
+        return res.status(404).json({
+            success: false,
+            message: 'No Any Users'
+        });
+    }
+
+    res.status(200).json({
+        success: true,
+        count: users.length,
+        users,
+        message: 'All Users Fetch SuccessFully'
+    })
+
+}
+
+//Get All Reasearch Papers
+exports.getAllUsers = async (req, res, next) => {
+
+    const users = await User.find();
+
+    if (!users) {
+        return res.status(404).json({
+            success: false,
+            message: 'No Any Users'
+        });
+    }
+
+    res.status(200).json({
+        success: true,
+        count: users.length,
+        users,
+        message: 'All Users Fetch SuccessFully'
+    })
+
+}
+
+//Update User Type By Admin
+exports.updateUserRole = async (req, res, next) => {
+
+    let type = req.body.role
+    let userID = req.body.userID
+
+    let user = await User.findById(userID);
+
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: 'User Not Found'
+        })
+    }
+
+    user = await User.findByIdAndUpdate(userID, { role: type }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+}

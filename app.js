@@ -1,6 +1,6 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-
 
 const cookieParser = require('cookie-parser');
 
@@ -9,10 +9,12 @@ app.use(cookieParser());
 
 //import All routers
 const user = require('./routes/user');
-// const research = require('./routes/user');
-// const sessions = require('./routes/user');
-// const payments = require('./routes/user');
 
+//Set Cors
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 
 app.use('/api/v1/', user)
 
