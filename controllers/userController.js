@@ -1,7 +1,49 @@
 const User = require('../models/users');
 const sendToken = require('../utils/jwtToken');
+const { addNotification, removeNotification } = require('../utils/notificationManager');
 
-//Registered User
+//Genaral
+//Show All Approved Research Papers
+exports.getAllApprovedSessions = async (req, res, next) => {
+
+    // const users = await User.find();
+
+    // if (!users) {
+    //     return res.status(404).json({
+    //         success: false,
+    //         message: 'No Any Users'
+    //     });
+    // }
+
+    addNotification('Your Session Request Approve By Admin', req.user.id);
+
+
+    res.status(200).json({
+        success: true,
+        message: 'All Sessions'
+    })
+}
+
+//Show All Sessions Approved By Admin
+exports.getAllApprovedResearchPapers = async (req, res, next) => {
+
+    // const users = await User.find();
+
+    // if (!users) {
+    //     return res.status(404).json({
+    //         success: false,
+    //         message: 'No Any Users'
+    //     });
+    // }
+
+    res.status(200).json({
+        success: true,
+        message: 'All Reseachs'
+    })
+
+}
+
+//Registered User +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //User Registration
 exports.registerUser = async (req, res, next) => {
 
@@ -142,7 +184,17 @@ exports.updateUser = async (req, res, next) => {
     })
 }
 
-//Admin
+//Mark As Read Notification
+exports.notificationMarker = async (req, res, next) => {
+
+    await removeNotification(req.params.id, req.user.id)
+
+    res.status(200).json({
+        success: true,
+    })
+}
+
+//Admin +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //Admin Get All Users
 exports.getAllUsers = async (req, res, next) => {
 
@@ -185,7 +237,7 @@ exports.getAllSessions = async (req, res, next) => {
 }
 
 //Get All Reasearch Papers
-exports.getAllUsers = async (req, res, next) => {
+exports.getResearchPapers = async (req, res, next) => {
 
     const users = await User.find();
 
@@ -231,3 +283,32 @@ exports.updateUserRole = async (req, res, next) => {
         user
     })
 }
+
+//Approve Sessions By Admin
+exports.approveSessions = async (req, res, next) => {
+
+    let sessionID = req.parms.id
+    let session = await Session.findById(sessionID);
+
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: 'Session Not Found',
+            session
+        })
+    }
+
+    user = await User.findByIdAndUpdate(sessionID, { isApproveed: true }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    addNotification('Your Session Request Approve By Admin', req.user.id);
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+}
+

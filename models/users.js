@@ -101,29 +101,6 @@ const userSchema = mongoose.Schema({
             required: [true, 'Please Enter Institued']
         }
     },
-    paymentDetails: {
-        cardNumber: {
-            type: Number,
-            required: [true, 'Please Enter Card Number'],
-            minLenght: [16, 'Card Number Must Be Longer 16 Charactors'],
-            maxLength: [16, 'Card number Con Not Exceed 16 Charactors']
-        },
-        cardName: {
-            type: String,
-            required: [true, 'Please Enter Card Name'],
-        },
-        cardCVV: {
-            type: Number,
-            required: [true, 'Please Enter CVV Number'],
-            minLenght: [3, 'Card Number Must Be Longer 3 Charactors'],
-            maxLength: [3, 'Card number Con Not Exceed 3 Charactors']
-        },
-        cardExpireDate: {
-            type: Date,
-            required: true
-        }
-
-    },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 
