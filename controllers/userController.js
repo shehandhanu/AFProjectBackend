@@ -49,7 +49,7 @@ exports.registerUser = async (req, res, next) => {
 
     const { firstName, lastName, fullName, birthday, email, password, public_id, url, role,
         profileCreatedAt, contactNumber, gender, street1, street2, city, zipCode, country, highestEducation, certifiedDate,
-        institued, cardNumber, cardName, cardCVV, cardExpireDate,
+        institued,
     } = req.body;
 
     const user = await User.create({
@@ -80,12 +80,6 @@ exports.registerUser = async (req, res, next) => {
             highestEducation,
             certifiedDate,
             institued
-        },
-        paymentDetails: {
-            cardNumber,
-            cardName,
-            cardCVV,
-            cardExpireDate
         }
     })
 
