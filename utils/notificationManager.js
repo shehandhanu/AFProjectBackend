@@ -38,11 +38,10 @@ exports.addNotification = async (message, user) => {
 //Remove Notifications
 exports.removeNotification = async (noID, user) => {
 
-    console.log('works');
-
     var id = mongoose.Types.ObjectId(noID)
 
-    let notification = await Notification.find({ notifications: id });
+    let notification = await Notification.updateOne({ "notifications._id": id },
+        { $set: { "notifications.$.isChecked": true } });
 
     if (!notification) {
         return res.status(404).json({
