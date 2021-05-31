@@ -9,6 +9,8 @@ app.use(cookieParser());
 
 //import All routers
 const user = require('./routes/user');
+const session = require('./routes/session')
+
 
 //Set Cors
 app.use(cors({
@@ -17,5 +19,6 @@ app.use(cors({
 }))
 
 app.use('/api/v1/', user)
+app.use('/api/v1/', session)
 
 module.exports = app;
