@@ -1,0 +1,6 @@
+notification remover,
+
+session handeling
+research handeling
+payment handling 
+
