@@ -10,4 +10,3 @@ connectDatabase();
 app.listen(process.env.PORT, () => {
     console.log(`Sever Started On Port : ${process.env.PORT} In ${process.env.NODE_ENV} Mode`);
 })
-
