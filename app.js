@@ -23,5 +23,8 @@ app.use('/api/v1/', user)
 app.use('/api/v1/', research)
 app.use('/api/v1/', payment)
 app.use('/api/v1/', session)
+app.get('/', (req, res) => {
+    res.send('Hi Shehan..........!');
+})
 
 module.exports = app;
