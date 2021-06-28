@@ -15,7 +15,7 @@ router.route('/researchpublication').post(isAuthenticatedUser, addResearchPapers
 //Get Research Papers
 router.route('/researchpapers/:id').get(isAuthenticatedUser, getResearchPapers);
 //get all research
-router.route('/allresearchpapers').get(isAuthenticatedUser, authorizeRoles('Admin'), getAllResearchPapers);
+router.route('/allresearchpapers').get(isAuthenticatedUser, getAllResearchPapers);
 //Update Research Papers 
 router.route('/updateresearchpapers/:id').post(updateResearchPapers);
 

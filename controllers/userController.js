@@ -360,9 +360,11 @@ exports.getNotification = async (req, res) => {
         })
     }
 
+    let outNotifications = (notification[0].notifications);
+
     res.status(200).json({
         success: true,
-        notification
+        outNotifications
     })
 
 }

@@ -30,6 +30,8 @@ router.route('/updateuser').post(isAuthenticatedUser, authorizeRoles('Admin'), u
 router.route('/signout').get(logoutUser)
 //notification
 router.route('/notifications').get(isAuthenticatedUser, getNotification)
+//Mark As Read Notification
+router.route('/marknotification/:id').get(isAuthenticatedUser, notificationMarker)
 
 
 //Admin
@@ -38,11 +40,9 @@ router.route('/admin/updateuser').put(isAuthenticatedUser, authorizeRoles('Admin
 //Get Users
 router.route('/admin/getusers').get(isAuthenticatedUser, authorizeRoles('Admin'), getAllUsers)
 //Session Approvel
-router.route('/admin/approvesession/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), approveSessions)
+router.route('/admin/approvesession/:id').get(isAuthenticatedUser, /*authorizeRoles('Admin'),*/ approveSessions)
 //Research Paper Approvel
-router.route('/admin/approveresearch/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), approveReseachPapers)
-//Mark As Read Notification
-router.route('/admin/marknotification/:id').get(isAuthenticatedUser, notificationMarker)
+router.route('/admin/approveresearch/:id').get(isAuthenticatedUser, /*authorizeRoles('Admin'),*/ approveReseachPapers)
 
 //Get All Approved Sessions
 router.route('/getsessions').get(getAllApprovedSessions)

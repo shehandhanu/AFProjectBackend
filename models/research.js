@@ -44,7 +44,7 @@ const researchSchema = mongoose.Schema({
     },
     isApproved: {
         type: Number,
-        default: 1
+        default: 0
     },
     approvedBy: {
         type: mongoose.Schema.ObjectId,
