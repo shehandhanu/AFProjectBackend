@@ -10,7 +10,11 @@ const { registerUser,
     updateUserRole,
     getAllUsers,
     getAllApprovedSessions,
-    notificationMarker } = require('../controllers/userController')
+    approveSessions,
+    notificationMarker,
+    approveReseachPapers,
+    getAllApprovedResearchPapers,
+    getNotification } = require('../controllers/userController')
 
 const { isAuthenticatedUser, authorizeRoles } = require('../utils/authenticator')
 
@@ -24,6 +28,9 @@ router.route('/signin').post(loginUser)
 router.route('/updateuser').post(isAuthenticatedUser, authorizeRoles('Admin'), updateUser)
 //Logout User
 router.route('/signout').get(logoutUser)
+//notification
+router.route('/notifications').get(isAuthenticatedUser, getNotification)
+
 
 //Admin
 //Update User
@@ -31,9 +38,16 @@ router.route('/admin/updateuser').put(isAuthenticatedUser, authorizeRoles('Admin
 //Get Users
 router.route('/admin/getusers').get(isAuthenticatedUser, authorizeRoles('Admin'), getAllUsers)
 //Session Approvel
-router.route('/admin/approvesession').get(isAuthenticatedUser, authorizeRoles('Admin'), getAllApprovedSessions)
+router.route('/admin/approvesession/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), approveSessions)
+//Research Paper Approvel
+router.route('/admin/approveresearch/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), approveReseachPapers)
 //Mark As Read Notification
 router.route('/admin/marknotification/:id').get(isAuthenticatedUser, notificationMarker)
+
+//Get All Approved Sessions
+router.route('/getsessions').get(getAllApprovedSessions)
+//Get All Approved Researches
+router.route('/getresearches').get(getAllApprovedResearchPapers)
 
 
 module.exports = router;

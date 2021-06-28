@@ -12,6 +12,7 @@ const checkNotification = async (user) => {
             notification: []
         })
     }
+
 }
 
 //Add Notifications
@@ -20,9 +21,6 @@ exports.addNotification = async (message, user) => {
     await checkNotification(user)
 
     let uNotification = await Notification.find({ userID: user });
-
-    console.log(uNotification)
-    console.log(uNotification[0]._id)
 
     message = {
         notificationTitle: message
@@ -58,5 +56,18 @@ exports.removeNotification = async (noID, user) => {
     //     runValidators: true,
     //     useFindAndModify: false
     // });;
+
+}
+
+//Check Notifications
+exports.getNotification = async (user) => {
+
+    let notification = await Notification.find({ userID: user });
+
+    if (notification.length == 0) {
+        return null
+    }
+
+    return notification
 
 }
