@@ -14,7 +14,8 @@ const { registerUser,
     notificationMarker,
     approveReseachPapers,
     getAllApprovedResearchPapers,
-    getNotification } = require('../controllers/userController')
+    getNotification,
+    rejectSessions } = require('../controllers/userController')
 
 const { isAuthenticatedUser, authorizeRoles } = require('../utils/authenticator')
 
@@ -40,7 +41,9 @@ router.route('/admin/updateuser').put(isAuthenticatedUser, authorizeRoles('Admin
 //Get Users
 router.route('/admin/getusers').get(isAuthenticatedUser, authorizeRoles('Admin'), getAllUsers)
 //Session Approvel
-router.route('/admin/approvesession/:id').get(isAuthenticatedUser, /*authorizeRoles('Admin'),*/ approveSessions)
+router.route('/admin/approvesession/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), approveSessions)
+//Session Reject
+router.route('/admin/rejectsession/:id').get(isAuthenticatedUser, authorizeRoles('Admin'), rejectSessions)
 //Research Paper Approvel
 router.route('/admin/approveresearch/:id').get(isAuthenticatedUser, /*authorizeRoles('Admin'),*/ approveReseachPapers)
 

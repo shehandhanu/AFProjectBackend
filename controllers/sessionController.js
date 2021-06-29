@@ -1,4 +1,5 @@
 const Session = require('../models/sessions');
+const { addNotification, removeNotification, getNotification } = require('../utils/notificationManager');
 
 //Create Session Praposal
 exports.registerSessionPraposal = async (req, res, next) => {
@@ -19,6 +20,8 @@ exports.registerSessionPraposal = async (req, res, next) => {
         sessionPrice,
         flyer
     })
+
+    addNotification('Your Session Request Praposal Added Successfully', req.user.id);
 
     res.status(200).json({
         success: true,
@@ -42,9 +45,14 @@ exports.registerSession = async (req, res, next) => {
         })
     }
 
+
     session = await Session.updateOne({ _id: sessionID },
         { sessionCreate: { createBy: creatorID, createdDate: Date.now(), createrName: creatorName } }
         && { approvel: { isApproved: 1 } })
+
+    session = await Session.findById(sessionID)
+
+    addNotification('Your Session Request Praposal Added Successfully', session.praposeBy);
 
     res.status(200).json({
         success: true,

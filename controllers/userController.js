@@ -316,6 +316,36 @@ exports.approveSessions = async (req, res, next) => {
     })
 }
 
+//Reject Sessions By Admin
+exports.rejectSessions = async (req, res, next) => {
+
+    let sessionID = req.params.id
+    let session = await Session.findById(sessionID);
+
+    if (!session) {
+        return res.status(404).json({
+            success: false,
+            message: 'Session Not Found',
+            session
+        })
+    }
+
+    session = await Session.updateOne({ _id: sessionID }, { approvel: { isApproved: 1, approvedDate: Date.now(), approvedBy: req.user.id } }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    session = await Session.findById(sessionID);
+
+    addNotification('Your Session Request Rejected By Admin', req.user.id);
+
+    res.status(200).json({
+        success: true,
+        session
+    })
+}
+
 //Reviwer +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //Approve Sessions By Reviwer
 exports.approveReseachPapers = async (req, res, next) => {

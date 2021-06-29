@@ -18,6 +18,8 @@ const checkNotification = async (user) => {
 //Add Notifications
 exports.addNotification = async (message, user) => {
 
+    console.log(user);
+
     await checkNotification(user)
 
     let uNotification = await Notification.find({ userID: user });
@@ -31,6 +33,9 @@ exports.addNotification = async (message, user) => {
         runValidators: true,
         useFindAndModify: false
     });;
+
+    notification = await Notification.find({ userID: user })
+
 }
 
 //Remove Notifications
