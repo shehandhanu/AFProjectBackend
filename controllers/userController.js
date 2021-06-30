@@ -1,44 +1,50 @@
 const User = require('../models/users');
+const Session = require('../models/sessions');
+const Research = require('../models/research');
 const sendToken = require('../utils/jwtToken');
-const { addNotification, removeNotification } = require('../utils/notificationManager');
+const { addNotification, removeNotification, getNotification } = require('../utils/notificationManager');
+const sendMail = require('../utils/emailService');
 
 //Genaral
 //Show All Approved Research Papers
 exports.getAllApprovedSessions = async (req, res, next) => {
 
-    // const users = await User.find();
+    const sessions = await Session.find({ "approvel.isApproved": 2 });
 
-    // if (!users) {
-    //     return res.status(404).json({
-    //         success: false,
-    //         message: 'No Any Users'
-    //     });
-    // }
+    if (sessions.length == 0) {
+        return res.status(404).json({
+            success: false,
+            message: 'No Approveed Sessions'
+        });
+    }
 
-    addNotification('Your Session Request Approve By Admin', req.user.id);
-
+    data = {
+        email: "janitha613@gmail.com"
+    }
 
     res.status(200).json({
         success: true,
-        message: 'All Sessions'
+        message: 'Sessions fetched',
+        sessions
     })
 }
 
 //Show All Sessions Approved By Admin
 exports.getAllApprovedResearchPapers = async (req, res, next) => {
 
-    // const users = await User.find();
+    const research = await Research.find({ "isApproved": true });
 
-    // if (!users) {
-    //     return res.status(404).json({
-    //         success: false,
-    //         message: 'No Any Users'
-    //     });
-    // }
+    if (research.length == 0) {
+        return res.status(404).json({
+            success: false,
+            message: 'No Approveed Researches'
+        });
+    }
 
     res.status(200).json({
         success: true,
-        message: 'All Reseachs'
+        message: 'All Reseachs',
+        research
     })
 
 }
@@ -95,6 +101,7 @@ exports.getUserProfile = async (req, res, next) => {
     if (!user) {
         return res.status(401).json({
             success: false,
+            user: [],
             message: 'User Not Found'
         })
     }
@@ -282,10 +289,10 @@ exports.updateUserRole = async (req, res, next) => {
 //Approve Sessions By Admin
 exports.approveSessions = async (req, res, next) => {
 
-    let sessionID = req.parms.id
+    let sessionID = req.params.id
     let session = await Session.findById(sessionID);
 
-    if (!user) {
+    if (!session) {
         return res.status(404).json({
             success: false,
             message: 'Session Not Found',
@@ -293,17 +300,69 @@ exports.approveSessions = async (req, res, next) => {
         })
     }
 
-    user = await User.findByIdAndUpdate(sessionID, { isApproveed: true }, {
+    session = await Session.updateOne({ _id: sessionID }, { approvel: { isApproved: 2, approvedDate: Date.now(), approvedBy: req.user.id } }, {
         new: true,
         runValidators: true,
         useFindAndModify: false
     });
 
+    session = await Session.findById(sessionID);
+
     addNotification('Your Session Request Approve By Admin', req.user.id);
 
     res.status(200).json({
         success: true,
-        user
+        session
     })
 }
 
+//Reviwer +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//Approve Sessions By Reviwer
+exports.approveReseachPapers = async (req, res, next) => {
+
+    let researchID = req.params.id
+    let researchPublicaion = await Research.findById(researchID);
+
+    if (!researchPublicaion) {
+        return res.status(404).json({
+            success: false,
+            message: 'Session Not Found',
+            researchPublicaion
+        })
+    }
+
+    researchPublicaion = await Research.updateOne({ _id: researchID }, { isApproved: true, approvedDate: Date.now(), approvedBy: req.user.id }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    researchPublicaion = await Research.findById(researchID);
+
+    addNotification(`Your Reasearch Publication Approve By Reviewer ${req.user.id}`, req.user.id);
+
+    res.status(200).json({
+        success: true,
+        researchPublicaion
+    })
+}
+
+exports.getNotification = async (req, res) => {
+
+    const user = await User.findById(req.user.id);
+
+    let notification = await getNotification(user._id);
+
+    if (notification.length == 0) {
+        res.status(200).json({
+            success: true,
+            notification: []
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        notification
+    })
+
+}

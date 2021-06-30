@@ -44,13 +44,9 @@ const userSchema = mongoose.Schema({
         select: false
     },
     profilePicture: {
-        public_id: {
-            type: String,
-            required: true
-        },
         url: {
             type: String,
-            default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Ficons8.com%2Ficons%2Fset%2Fuser&psig=AOvVaw3nxR10tnEiXUyCnSmO3RSZ&ust=1620414130093000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjj4JbftfACFQAAAAAdAAAAABAI'
+            required: [true, 'Please Add Profile Picture']
         }
     },
     role: {

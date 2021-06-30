@@ -15,13 +15,13 @@ const session = require('./routes/session')
 
 //Set Cors
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:1234',
     credentials: true
 }))
 
 app.use('/api/v1/', user)
 app.use('/api/v1/', research)
-app.use('/api/v1/',payment)
+app.use('/api/v1/', payment)
 app.use('/api/v1/', session)
 
 module.exports = app;

@@ -2,47 +2,57 @@ const mongoose = require('mongoose');
 
 const researchSchema = mongoose.Schema({
 
-    contactInfo:{
-        phoneNo:{
+    contactInfo: {
+        UserID: {
+            type: mongoose.Schema.ObjectId,
+            required: true
+        },
+        phoneNo: {
             type: String,
             requied: [true, 'Please Enter Your Phone Number'],
-            unique: true,
             maxLength: [15, 'Phone Number Can not Exceed 15 Characters']
         },
-        email:{
+        email: {
             type: String,
             requied: [true, 'Please Enter Your Email'],
-            unique: true,
             maxLength: [30, 'Email Can not Exceed 30 Characters']
         }
     },
-    title:{
+    title: {
         type: String,
-        requied: [true, 'Please Enter The Title That You Want']
+        required: [true, 'Please Enter The Title That You Want']
     },
-    description:{
+    description: {
         type: String,
-        requied: [true, 'Please Enter The Description']
+        required: [true, 'Please Enter The Description']
     },
-    tag:{
+    tag: {
         type: String,
-        requied: [true, 'Please Enter The Tag That You Want']
+        required: [true, 'Please Enter The Tag That You Want']
     },
-    uploadDate:{
+    uploadDate: {
         type: Date,
         default: Date.now()
     },
-    isApproved:{
-        type: Boolean,
-        default: false
-    },
-    approvedBy:{
+    document: {
         type: String,
-        requied: [true, 'Select The Approved Person']
+        required: [true, 'Please Add The File']
     },
-    approvedDate:{
+    coverPage: {
+        type: String,
+        required: [true, 'Please Add Cover Page']
+    },
+    isApproved: {
+        type: Number,
+        default: 1
+    },
+    approvedBy: {
+        type: mongoose.Schema.ObjectId,
+        default: null
+    },
+    approvedDate: {
         type: Date,
-        requied: [true, 'Select The Approved Date']
+        default: null
     }
 })
 
