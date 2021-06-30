@@ -1,0 +1,16 @@
+notification remover,
+
+session handeling
+research handeling
+payment handling 
+
+
+
+pass 
+    danuka - approve research 
+
+    sandaru - approve session
+              approved session 
+              all sessions
+
+    tharaka - take attendees to sessions
