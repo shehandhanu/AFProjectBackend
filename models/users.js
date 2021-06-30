@@ -9,18 +9,18 @@ const userSchema = mongoose.Schema({
         firstName: {
             type: String,
             required: [true, 'Please Enter User First Name'],
-            maxLenght: [50, 'User First Name Cannot Exceed 50 Characters']
+            maxLength: [50, 'User First Name Cannot Exceed 50 Characters']
         },
         lastName: {
             type: String,
             required: [true, 'Please Enter User Last Name'],
-            maxLenght: [50, 'User Last Name Cannot Exceed 50 Characters']
+            maxLength: [50, 'User Last Name Cannot Exceed 50 Characters']
         }
     },
     fullName: {
         type: String,
         required: [true, 'Please Enter Full Name'],
-        maxLenght: [150, 'User Full Name Can not Exceed 150 Characters']
+        maxLength: [150, 'User Full Name Can not Exceed 150 Characters']
     },
     birthday: {
         type: Date,
@@ -40,17 +40,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please Enter Password'],
         minLenght: [8, 'Your Password Must Be Longer Than 6 Characters'],
-        maxLenght: [20, 'User Full Name Can not Exceed 20 Characters'],
+        maxLength: [20, 'User Full Name Can not Exceed 20 Characters'],
         select: false
     },
     profilePicture: {
-        public_id: {
-            type: String,
-            required: true
-        },
         url: {
             type: String,
-            default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Ficons8.com%2Ficons%2Fset%2Fuser&psig=AOvVaw3nxR10tnEiXUyCnSmO3RSZ&ust=1620414130093000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjj4JbftfACFQAAAAAdAAAAABAI'
+            required: [true, 'Please Add Profile Picture']
         }
     },
     role: {
@@ -68,23 +64,23 @@ const userSchema = mongoose.Schema({
     address: {
         street1: {
             type: String,
-            maxLenght: [50, 'User Address street1 Can not Exceed 50 Characters']
+            maxLength: [50, 'User Address street1 Can not Exceed 50 Characters']
         },
         street2: {
             type: String,
-            maxLenght: [50, 'User Address street2 Can not Exceed 50 Characters']
+            maxLength: [50, 'User Address street2 Can not Exceed 50 Characters']
         },
         city: {
             type: String,
-            maxLenght: [50, 'User Address city Can not Exceed 50 Characters']
+            maxLength: [50, 'User Address city Can not Exceed 50 Characters']
         },
         zipCode: {
             type: String,
-            maxLenght: [50, 'User Address zipCode Can not Exceed 50 Characters']
+            maxLength: [50, 'User Address zipCode Can not Exceed 50 Characters']
         },
         country: {
             type: String,
-            maxLenght: [50, 'User Address country Can not Exceed 50 Characters']
+            maxLength: [50, 'User Address country Can not Exceed 50 Characters']
         }
     },
     education: {
@@ -100,29 +96,6 @@ const userSchema = mongoose.Schema({
             type: String,
             required: [true, 'Please Enter Institued']
         }
-    },
-    paymentDetails: {
-        cardNumber: {
-            type: Number,
-            required: [true, 'Please Enter Card Number'],
-            minLenght: [16, 'Card Number Must Be Longer 16 Charactors'],
-            maxLenght: [16, 'Card number Con Not Exceed 16 Charactors']
-        },
-        cardName: {
-            type: String,
-            required: [true, 'Please Enter Card Name'],
-        },
-        cardCVV: {
-            type: Number,
-            required: [true, 'Please Enter CVV Number'],
-            minLenght: [3, 'Card Number Must Be Longer 3 Charactors'],
-            maxLenght: [3, 'Card number Con Not Exceed 3 Charactors']
-        },
-        cardExpireDate: {
-            type: Date,
-            required: true
-        }
-
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date
