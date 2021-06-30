@@ -1,28 +1,44 @@
 const Payment = require('../models/payments');
-const sendToken = require('../utils/jwtToken');
+const Research = require('../models/research');
+const Session = require('../models/sessions');
 
 //save payment details
-exports.savePaymentDetails = async (req, res, next) =>{
+exports.savePaymentDetails = async (req, res, next) => {
 
-    console.log(req.user.paymentDetails.cardNumber);
+    const { paymentDescription, amount, cardNumber, cardName, cardCVV, cardExpireDate } = req.body;
+    let paymentTypeID = req.params.id;
+    console.log(paymentTypeID);
+    let paymentType = null;
 
-    const {  paymentDescription, amount, cardNumber, cardName, cardCVV, cardExpireDate} = req.body;
+
+    let paymentT = await Research.findById(paymentTypeID)
+    if (!paymentT) {
+        let paymentT = await Session.findById(paymentTypeID)
+        if (!paymentT) {
+            return res.status(404).json({
+                success: false,
+                message: 'not found any recored'
+            })
+        }
+        paymentType = 'Session Payment :- ' + paymentT.sessionName
+    } else {
+        paymentType = 'Publication Payment :- ' + paymentT.title
+    }
+
+    console.log(paymentType);
 
     const payment = await Payment.create({
         userID: req.user.id,
         paymentDescription,
+        paymentType: paymentType,
+        paymentTypeID: paymentTypeID,
         amount,
         cardNumber,
         cardName,
         cardCVV,
         cardExpireDate
-        // cardNumber : req.user.paymentDetails.cardNumber,
-        // cardName : req.user.paymentDetails.cardName,
-        // cardCVV : req.user.paymentDetails.cardCVV,
-        // cardExpireDate : req.user.paymentDetails.cardExpireDate
-
-
     })
+
     res.status(200).json({
         success: true,
         payment,
@@ -30,7 +46,7 @@ exports.savePaymentDetails = async (req, res, next) =>{
     })
 }
 
-exports.getPaymentDetails = async(req, res, next) =>{
+exports.getPaymentDetails = async (req, res, next) => {
     const payments = await Payment.find()
     res.status(200).json({
         success: true,
@@ -39,12 +55,11 @@ exports.getPaymentDetails = async(req, res, next) =>{
     })
 }
 
-exports.getOwnPaymentDetails = async(req, res, next) =>{
-    const payments = await Payment.find({userID:req.user.id})
+exports.getOwnPaymentDetails = async (req, res, next) => {
+    const payments = await Payment.find({ userID: req.user.id })
     res.status(200).json({
         success: true,
         payments,
         message: "Payment load  successfully"
     })
 }
-
