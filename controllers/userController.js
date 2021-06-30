@@ -142,3 +142,32 @@ exports.updateUser = async (req, res, next) => {
     })
 }
 
+exports.approveReseachPapers = async (req, res, next) => {
+
+    let researchID = req.params.id
+    let researchPublicaion = await Research.findById(researchID);
+
+    if (!researchPublicaion) {
+        return res.status(404).json({
+            success: false,
+            message: 'Session Not Found',
+            researchPublicaion
+        })
+    }
+
+    researchPublicaion = await Research.updateOne({ _id: researchID }, { isApproved: true, approvedDate: Date.now(), approvedBy: req.user.id }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    researchPublicaion = await Research.findById(researchID);
+
+    addNotification(`Your Reasearch Publication Approve By Reviewer ${req.user.id}`, req.user.id);
+
+    res.status(200).json({
+        success: true,
+        researchPublicaion
+    })
+}
+

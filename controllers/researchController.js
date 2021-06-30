@@ -74,4 +74,20 @@ exports.updateResearchPapers = async (req, res, next) => {
 //remove ResearchPapers
 exports.deleteResearchPapers = async (req, res, next) => {
 
+    let researchPapers = await Research.findById(req.params.id);
+
+    if (!researchPapers) {
+        return res.status(404).json({
+            success: false,
+            message: 'Research Papers Not Found'
+        })
+    }
+
+    researchPapers = await Research.findByIdAndDelete(req.params.id)
+
+    res.status(200).json({
+        success: true,
+        researchPapers,
+        message: 'Update Successfull'
+    })
 }
