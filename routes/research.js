@@ -19,5 +19,11 @@ router.route('/allresearchpapers').get(isAuthenticatedUser, authorizeRoles('Admi
 //Update Research Papers 
 router.route('/updateresearchpapers/:id').post(updateResearchPapers);
 
+router.route('/deleteresearchpapers/:id').post(deleteResearchPapers);
+
+// router.route('/updateuser').post(isAuthenticatedUser, authorizeRoles('Admin'), updateUser)
+// //Logout User
+// router.route('/signout').get(logoutUser)
+
 
 module.exports = router;
