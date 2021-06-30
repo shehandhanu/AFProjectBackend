@@ -102,3 +102,60 @@ exports.savesession = async (req, res, next) =>{
         message: "Sessions added successfully"
     })
 }
+
+//Get All Sessions
+
+exports.getAllSessions = async (req, res, next) => {
+
+
+
+    let sessions = await Session.find();
+
+
+
+    res.status(200).json({
+
+        success: true,
+
+        NumberOfSession: sessions.length,
+
+        sessions
+
+    })
+
+}
+
+
+//Get Current session
+
+exports.getsession = async (req, res, next) => {
+
+
+
+    const session = await session.findById(req.params.id);
+
+
+
+    if (!session) {
+
+        return res.status(401).json({
+
+            success: false,
+
+            message: 'Session Not Found'
+
+        })
+
+    }
+
+
+
+    res.status(200).json({
+
+        success: true,
+
+        session
+
+    })
+
+}
