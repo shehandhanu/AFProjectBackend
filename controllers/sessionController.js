@@ -102,3 +102,43 @@ exports.savesession = async (req, res, next) =>{
         message: "Sessions added successfully"
     })
 }
+
+//Get Attendees For Sessions
+exports.joinToSession = async (req, res, next) => {
+
+    let sessionID = req.params.id;
+    let userID = req.user.id
+    let userName = req.user.fullName
+    let session = await Session.findById(sessionID);
+
+    if (!session) {
+        return res.status(404).json({
+            success: false,
+            message: 'Session Not Found',
+        })
+    }
+
+    session = await Session.find({ _id: sessionID, "attendeeList.attendeeID": userID })
+
+    if (!session.length == 0) {
+        return res.status(201).json({
+            success: false,
+            message: 'You Are Already Register For This Session',
+        })
+    }
+
+    session = await Session.updateOne({ _id: sessionID }, { $push: { attendeeList: [{ attendeeID: userID, attendeeName: userName }] } }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    });
+
+    session = await Session.findById(sessionID);
+
+    // addNotification(`Your Reasearch Publication Approve By Reviewer ${req.user.id}`, req.user.id);
+
+    res.status(200).json({
+        success: true,
+        session
+    })
+}
